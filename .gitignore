@@ -1,0 +1,42 @@
+# Java Maven Build Target
+target/
+*.class
+*.jar
+*.war
+*.ear
+
+# Node / React Dependencies
+frontend/node_modules/
+frontend/dist/
+frontend/node_modules/
+
+# Local Environment Variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDE Settings
+.idea/
+.vscode/
+*.iml
+*.iws
+*.ipr
+.project
+.classpath
+.settings/
+
+# Databases
+*.db
+*.mv.db
+*.trace.db
+
+# OS System Files
+Thumbs.db
+.DS_Store
+
+# Agent Scratch Files
+.agents/
+.gemini/
+.system_generated/
