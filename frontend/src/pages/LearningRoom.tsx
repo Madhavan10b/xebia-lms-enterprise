@@ -101,7 +101,7 @@ export const LearningRoom: React.FC = () => {
       <aside className="w-full lg:w-[330px] flex-shrink-0 bg-white/60 backdrop-blur-md rounded-2xl border border-white/60 p-4 md:p-6 flex flex-col gap-5 overflow-y-auto shadow-glass">
         <div>
           <span className="text-[10px] font-extrabold tracking-wider text-brand-success uppercase">
-            {currentCourse.category?.name || 'GEEKNITO'}
+            {currentCourse.category?.name || 'XEBIA LMS'}
           </span>
           <h3 className="font-extrabold text-lg text-brand-primaryDark mt-1 leading-snug">
             {currentCourse.title}

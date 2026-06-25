@@ -1,4 +1,4 @@
-# Geeknito Studio - Course Management Portal
+# XEBIA LMS Studio - Course Management Portal
 
 This project is a unified Course Management application featuring a high-fidelity **Spring Boot + JPA** backend and a premium, responsive **React 18 + TypeScript + Tailwind CSS** frontend.
 
@@ -56,7 +56,7 @@ This compiles the React app into HTML, CSS, and JS, placing the build directly i
 2. **Start Spring Boot**:
    In the terminal, run:
    ```bash
-   mvn spring-boot:run
+    
    ```
 3. **Explore**:
    Open your browser and navigate to **`http://localhost:8085/`**.

@@ -1,6 +1,6 @@
-# Geeknito Frontend Studio Documentation
+# XEBIA LMS Frontend Studio Documentation
 
-This document outlines the architecture, visual tokens, and features of the Geeknito Course Management frontend.
+This document outlines the architecture, visual tokens, and features of the XEBIA LMS Course Management frontend.
 
 ---
 
@@ -30,7 +30,7 @@ The frontend utilizes a modern **Light Mode Glassmorphism** design system with a
 ## ⚙️ 2. Core UI Layout Components
 
 ### A. Sidebar Navigation Pane (Dark Contrast Glass)
-*   Holds the **Geeknito Logo** (a gradient box featuring Emerald and Bright Velvet) and brand name.
+*   Holds the **XEBIA LMS Logo** (a gradient box featuring Emerald and Bright Velvet) and brand name.
 *   Contains tabs to switch views: *Course Catalog*, *Learning Room*, and *Authoring Studio*.
 
 ### B. Course Catalog View

@@ -21,7 +21,7 @@ const AppContent: React.FC = () => {
       case '/studio':
         return 'Authoring Studio';
       default:
-        return 'Geeknito';
+        return 'XEBIA LMS';
     }
   };
 

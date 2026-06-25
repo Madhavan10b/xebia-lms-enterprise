@@ -1,6 +1,6 @@
 @echo off
 echo ===================================================
-echo Building Geeknito React Frontend
+echo Building XEBIA LMS React Frontend
 echo ===================================================
 cd /d "%~dp0\frontend"
 echo Installing npm packages...

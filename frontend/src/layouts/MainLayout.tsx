@@ -30,10 +30,10 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children, pageTitle }) =
         {/* Brand */}
         <div className="flex items-center gap-3 mb-10 md:mb-12 mt-2 self-center md:self-start">
           <div className="w-10 h-10 md:w-11 md:h-11 bg-gradient-to-br from-brand-success to-brand-accent rounded-xl flex items-center justify-center font-extrabold text-xl md:text-2xl text-white shadow-[0_4px_18px_rgba(1,172,159,0.35)]">
-            G
+            X
           </div>
           <span className="hidden md:inline font-sans text-xl md:text-2xl font-extrabold tracking-tight bg-gradient-to-br from-white to-[#E2E4F0] bg-clip-text text-transparent">
-            Geeknito
+            XEBIA LMS
           </span>
         </div>
 
@@ -65,7 +65,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children, pageTitle }) =
 
         {/* Sidebar Footer */}
         <div className="mt-auto hidden md:block text-center text-[10px] text-white/30 tracking-wider uppercase font-bold">
-          <p>© 2026 Geeknito Studio</p>
+          <p>© 2026 XEBIA LMS Studio</p>
           <p className="mt-1 text-brand-success/75">v1.0.0 (JPA Schema)</p>
         </div>
       </aside>

@@ -1,6 +1,6 @@
 @echo off
 echo ===================================================
-echo Starting Geeknito React Frontend in Dev Mode
+echo Starting XEBIA LMS React Frontend in Dev Mode
 echo ===================================================
 cd /d "%~dp0\frontend"
 if not exist node_modules (

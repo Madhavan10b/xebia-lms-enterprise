@@ -160,9 +160,9 @@ const mockCourses: Course[] = [
 ];
 
 // Local Storage Keys
-const LOCAL_COURSES_KEY = 'geeknito_courses';
-const LOCAL_CATEGORIES_KEY = 'geeknito_categories';
-const LOCAL_IS_LIVE_API_KEY = 'geeknito_is_live_api';
+const LOCAL_COURSES_KEY = 'xebia_lms_courses';
+const LOCAL_CATEGORIES_KEY = 'xebia_lms_categories';
+const LOCAL_IS_LIVE_API_KEY = 'xebia_lms_is_live_api';
 
 // Initialize LocalStorage with mock data if not set
 if (!localStorage.getItem(LOCAL_CATEGORIES_KEY)) {
