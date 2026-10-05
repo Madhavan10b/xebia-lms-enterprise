@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -5,35 +7,56 @@
 @layer base {
   body {
     background-color: #FAFBFD;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     background-image: 
-      radial-gradient(at 0% 0%, rgba(255, 255, 255, 0.9) 0, transparent 50%),
-      radial-gradient(at 100% 0%, rgba(255, 255, 255, 0.4) 0, transparent 50%),
-      linear-gradient(rgba(218, 220, 234, 0.12) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(218, 220, 234, 0.12) 1px, transparent 1px);
-    background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
+      radial-gradient(at 10% 15%, rgba(108, 29, 95, 0.02) 0px, transparent 40%),
+      radial-gradient(at 90% 25%, rgba(1, 172, 159, 0.02) 0px, transparent 40%),
+      radial-gradient(at 50% 85%, rgba(255, 98, 0, 0.015) 0px, transparent 50%),
+      linear-gradient(rgba(218, 220, 234, 0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(218, 220, 234, 0.07) 1px, transparent 1px);
+    background-size: 200% 200%, 200% 200%, 200% 200%, 40px 40px, 40px 40px;
     background-attachment: fixed;
+    animation: breathingCanvas 25s ease infinite alternate;
+    letter-spacing: -0.015em;
+    line-height: 1.55;
+    font-variant-numeric: tabular-nums;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    letter-spacing: -0.025em;
+    line-height: 1.25;
   }
 }
 
-/* Glow Orbs Animations */
-@keyframes rotateOrb1 {
-  0% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(-8%, 5%) scale(1.1); }
-  100% { transform: translate(-3%, -5%) scale(0.95); }
+/* Premium Motion Keyframes */
+@keyframes breathingCanvas {
+  0% { background-position: 0% 0%, 0% 0%, 0% 0%, 0px 0px, 0px 0px; }
+  50% { background-position: 50% 100%, 100% 50%, 50% 50%, 0px 0px, 0px 0px; }
+  100% { background-position: 100% 0%, 0% 100%, 100% 100%, 0px 0px, 0px 0px; }
 }
 
-@keyframes rotateOrb2 {
-  0% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(10%, -6%) scale(1.15); }
-  100% { transform: translate(5%, 4%) scale(0.9); }
+@keyframes floatSlow {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-5px) rotate(0.2deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
 }
 
-.animate-orb1 {
-  animation: rotateOrb1 25s ease-in-out infinite alternate;
+@keyframes floatMedium {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-3.5px) rotate(-0.2deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
 }
 
-.animate-orb2 {
-  animation: rotateOrb2 25s ease-in-out infinite alternate;
+.animate-float-slow {
+  animation: floatSlow 7s ease-in-out infinite;
+}
+
+.animate-float-medium {
+  animation: floatMedium 5.5s ease-in-out infinite;
 }
 
 /* Custom Scrollbar */
@@ -52,24 +75,23 @@
   background: #6C1D5F;
 }
 
-/* Glassmorphism Classes */
+/* Premium Minimalist Card System (Apple/Samsung Aesthetic) */
 .glass-panel {
-  background: rgba(255, 255, 255, 0.62);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.7);
-  box-shadow: 0 10px 30px -10px rgba(74, 30, 71, 0.04);
+  background: #ffffff;
+  border: 1px solid rgba(108, 29, 95, 0.07);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.01), 0 8px 24px rgba(74, 30, 71, 0.015);
+  border-radius: 24px;
 }
 
 .glass-panel-hover {
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .glass-panel-hover:hover {
-  transform: translateY(-4px);
-  background: rgba(255, 255, 255, 0.78);
-  border-color: rgba(0, 186, 174, 0.45);
-  box-shadow: 0 30px 60px -15px rgba(74, 30, 71, 0.08), 0 10px 30px -10px rgba(0, 0, 0, 0.02), 0 0 30px rgba(0, 186, 174, 0.15);
+  transform: translateY(-2px);
+  background: #ffffff;
+  border-color: rgba(1, 172, 159, 0.35);
+  box-shadow: 0 16px 36px rgba(74, 30, 71, 0.05), 0 0 1px rgba(1, 172, 159, 0.1);
 }
 
 /* Prism-like gradients */
@@ -84,3 +106,94 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+
+/* Custom Scrollbar for list panels */
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Custom Checkbox Toggle Switch */
+.switch-input:checked ~ .switch-dot {
+  transform: translateX(100%);
+  background-color: #01AC9F;
+}
+.switch-input:checked ~ .switch-bg {
+  background-color: rgba(1, 172, 159, 0.2);
+  border-color: rgba(1, 172, 159, 0.4);
+}
+
+/* Circular SEO Score Ring */
+.circle-bg {
+  fill: none;
+  stroke: #E2E4F0;
+  stroke-width: 3.8;
+}
+.circle-progress {
+  fill: none;
+  stroke-linecap: round;
+  stroke-width: 3.8;
+  transition: stroke-dasharray 0.35s;
+}
+
+/* Minimalist Input Focus Styles */
+.glass-input {
+  background: #ffffff;
+  border: 1px solid rgba(108, 29, 95, 0.15);
+  border-radius: 12px;
+  transition: all 0.2s ease;
+}
+.glass-input:focus {
+  background: #ffffff;
+  border-color: #6C1D5F;
+  box-shadow: 0 0 0 3px rgba(108, 29, 95, 0.06);
+}
+
+/* Active navigation badge */
+.active-nav-glow {
+  box-shadow: 0 4px 12px rgba(108, 29, 95, 0.1);
+}
+
+/* Perspective and 3D card flipping */
+.perspective {
+  perspective: 1000px;
+}
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+.backface-hidden {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+
+/* Infinite Loading Animation */
+@keyframes infinite-loading {
+  0% { left: -33%; }
+  100% { left: 100%; }
+}
+.animate-infinite-loading {
+  position: absolute;
+  animation: infinite-loading 1.5s infinite linear;
+}
+
+/* Custom class card hover styles */
+.class-card-hover {
+  transition: all 0.25s ease-in-out;
+}
+.class-card-hover:hover {
+  background-color: #E8C8ED !important; /* slightly darker soft purple shade */
+  border-color: #D5A7DB !important; /* matching border color */
+}
+
+/* Submissions split-pane right side background shading */
+.submissions-grading-pane {
+  background: linear-gradient(135deg, #ffffff 40%, #E8C8ED 100%) !important; /* soft purple gradient */
+  border: 1px solid rgba(108, 29, 95, 0.15) !important;
+}
+

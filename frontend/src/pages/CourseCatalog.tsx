@@ -5,6 +5,109 @@ import { Search, Compass, BookOpen } from 'lucide-react';
 import { courseServices, categoryServices } from '../services/api';
 import { Course, Category } from '../types';
 
+// Independent 3D Tilt Card Component
+interface CourseCardProps {
+  course: Course;
+  progress: number;
+  onClick: () => void;
+  onStartClick: (e: React.MouseEvent) => void;
+}
+
+const CourseCard: React.FC<CourseCardProps> = ({ course, progress, onClick, onStartClick }) => {
+  const [tiltX, setTiltX] = useState(0);
+  const [tiltY, setTiltY] = useState(0);
+  const catColor = course.category?.color || '#6C1D5F';
+
+  const handleTiltMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
+    // Limit tilt degree to be extremely professional
+    setTiltX(-y / 15);
+    setTiltY(x / 15);
+  };
+
+  const handleTiltLeave = () => {
+    setTiltX(0);
+    setTiltY(0);
+  };
+
+  return (
+    <motion.div
+      layout
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, scale: 0.95 }}
+      transition={{ duration: 0.25 }}
+      whileHover={{ y: -3 }}
+      onMouseMove={handleTiltMove}
+      onMouseLeave={handleTiltLeave}
+      style={{
+        transform: `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`,
+        transformStyle: 'preserve-3d',
+        transition: 'transform 0.1s ease-out',
+        borderLeftColor: catColor
+      }}
+      onClick={onClick}
+      className="glass-panel glass-panel-hover p-5 rounded-2xl flex flex-col justify-between cursor-pointer border-l-4"
+    >
+      <div>
+        {/* Badge and Duration */}
+        <div className="flex justify-between items-start mb-4">
+          <span
+            className="text-[9px] font-black px-2.5 py-1 rounded-full uppercase border"
+            style={{
+              backgroundColor: `${catColor}08`,
+              color: catColor,
+              borderColor: `${catColor}15`,
+            }}
+          >
+            {course.category?.name || 'Learning'}
+          </span>
+          <span className="text-[11px] text-brand-muted font-semibold">
+            {course.duration || 'Self-Paced'}
+          </span>
+        </div>
+
+        <h3 className="text-base font-black text-brand-primaryDark mb-2 leading-snug line-clamp-1 tracking-tight">
+          {course.title}
+        </h3>
+        <p className="text-brand-muted text-xs md:text-sm leading-relaxed mb-6 line-clamp-3">
+          {course.description || 'No description provided.'}
+        </p>
+
+        {/* Progress indicator */}
+        <div className="space-y-1.5 mb-6">
+          <div className="flex justify-between text-[10px] font-bold text-brand-muted">
+            <span>Progress</span>
+            <span>{progress}%</span>
+          </div>
+          <div className="w-full h-1 bg-neutral-100 rounded-full overflow-hidden">
+            <div
+              className="h-full bg-[#01AC9F] rounded-full transition-all duration-300"
+              style={{ width: `${progress}%` }}
+            ></div>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex justify-between items-center pt-3 border-t border-neutral-100">
+        <span className="text-[10px] font-bold text-brand-muted bg-neutral-50 border border-neutral-100 px-2 py-0.5 rounded-md">
+          {course.level || 'Beginner'}
+        </span>
+        <motion.button
+          whileHover={{ scale: 1.03 }}
+          whileTap={{ scale: 0.97 }}
+          onClick={onStartClick}
+          className="bg-gradient-to-r from-brand-cta to-orange-500 hover:from-orange-500 hover:to-brand-cta text-white font-bold text-xs py-2 px-4 rounded-full flex items-center gap-1 transition-all duration-150 shadow-sm"
+        >
+          <BookOpen className="w-3.5 h-3.5" /> Start Course
+        </motion.button>
+      </div>
+    </motion.div>
+  );
+};
+
 export const CourseCatalog: React.FC = () => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -77,19 +180,45 @@ export const CourseCatalog: React.FC = () => {
     );
   }
 
+  // Framer Motion Stagger Variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.04
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 8 },
+    show: { 
+      opacity: 1, 
+      y: 0,
+      transition: { 
+        type: "spring", 
+        stiffness: 260, 
+        damping: 24 
+      } 
+    }
+  };
+
   return (
     <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.4 }}
+      variants={containerVariants}
+      initial="hidden"
+      animate="show"
       className="flex-grow flex flex-col gap-6 md:gap-8"
     >
       {/* Search and Hero Area */}
-      <div className="bg-gradient-to-br from-brand-primaryDark/95 to-brand-primary/90 border border-white/10 rounded-3xl p-6 md:p-10 text-white shadow-xl flex flex-col lg:flex-row justify-between items-stretch lg:items-center gap-6 relative overflow-hidden">
-        <div className="absolute right-0 bottom-0 w-80 h-80 rounded-full bg-brand-success/10 blur-[60px] pointer-events-none"></div>
+      <motion.div 
+        variants={itemVariants}
+        className="bg-gradient-to-br from-brand-primaryDark to-brand-primary border border-brand-primaryDark/20 rounded-2xl p-6 md:p-8 text-white shadow-sm flex flex-col lg:flex-row justify-between items-stretch lg:items-center gap-6 relative overflow-hidden"
+      >
         <div className="relative z-10 max-w-xl">
-          <h2 className="text-xl md:text-3xl font-extrabold mb-2 tracking-tight">Expand your engineering horizon</h2>
-          <p className="text-white/70 text-xs md:text-sm">High-fidelity, interactive lectures on Spring Boot, JPA persistence, System Architecture, and DevOps.</p>
+          <h2 className="text-xl md:text-2xl font-black mb-1.5 tracking-tight">Expand your engineering horizon</h2>
+          <p className="text-white/80 text-xs md:text-sm">High-fidelity, interactive lectures on Spring Boot, JPA persistence, System Architecture, and DevOps.</p>
         </div>
         <div className="relative z-10 w-full lg:w-80 flex-shrink-0">
           <input
@@ -97,41 +226,48 @@ export const CourseCatalog: React.FC = () => {
             placeholder="Search courses, topics, or skills..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-11 pr-4 py-3 rounded-xl border border-white/15 bg-white/10 text-white placeholder-white/50 text-sm focus:bg-white/20 focus:border-white/30 focus:outline-none focus:ring-4 focus:ring-white/5 backdrop-blur-md transition-all duration-300"
+            className="w-full pl-10 pr-4 py-2.5 rounded-full border border-white/15 bg-white/10 text-white placeholder-white/50 text-xs focus:bg-white/15 focus:border-white/30 focus:outline-none focus:ring-4 focus:ring-white/5 backdrop-blur-md transition-all duration-200"
           />
-          <Search className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-white/60 pointer-events-none" />
+          <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-white/50 pointer-events-none" />
         </div>
-      </div>
+      </motion.div>
 
       {/* Category Filters */}
-      <div className="flex gap-2.5 overflow-x-auto pb-2 -mx-2 px-2 scrollbar-none flex-wrap">
-        <button
+      <motion.div 
+        variants={itemVariants}
+        className="flex gap-2 pb-1 -mx-1 px-1 scrollbar-none flex-wrap"
+      >
+        <motion.button
+          whileHover={{ y: -1 }}
+          whileTap={{ scale: 0.97 }}
           onClick={() => handleFilterChange('all')}
-          className={`px-5 py-2.5 rounded-full font-bold text-xs md:text-sm border transition-all duration-300 hover:shadow-md ${
+          className={`px-4 py-2 rounded-full font-bold text-xs border transition-all duration-150 ${
             selectedCategory === 'all'
-              ? 'bg-gradient-to-r from-brand-primary to-brand-accent border-transparent text-white shadow-md'
-              : 'bg-white/60 backdrop-blur-md border-[#E2E4F0] text-brand-muted hover:-translate-y-0.5'
+              ? 'bg-[#6C1D5F] border-transparent text-white shadow-sm'
+              : 'bg-white border-neutral-200/80 text-brand-muted hover:border-brand-primary/20'
           }`}
         >
           All Fields
-        </button>
+        </motion.button>
         {categories.map((cat) => (
-          <button
+          <motion.button
+            whileHover={{ y: -1 }}
+            whileTap={{ scale: 0.97 }}
             key={cat.id}
             onClick={() => handleFilterChange(String(cat.id))}
-            className={`px-5 py-2.5 rounded-full font-bold text-xs md:text-sm border transition-all duration-300 hover:shadow-md ${
+            className={`px-4 py-2 rounded-full font-bold text-xs border transition-all duration-150 ${
               String(selectedCategory) === String(cat.id)
-                ? 'border-transparent text-white shadow-md'
-                : 'bg-white/60 backdrop-blur-md border-[#E2E4F0] text-brand-muted hover:-translate-y-0.5'
+                ? 'border-transparent text-white shadow-sm'
+                : 'bg-white border-neutral-200/80 text-brand-muted hover:border-brand-primary/20'
             }`}
             style={{
               background: String(selectedCategory) === String(cat.id) ? cat.color || '#6C1D5F' : undefined,
             }}
           >
             {cat.name}
-          </button>
+          </motion.button>
         ))}
-      </div>
+      </motion.div>
 
       {/* Courses Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -141,88 +277,28 @@ export const CourseCatalog: React.FC = () => {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="col-span-full py-16 flex flex-col items-center justify-center text-brand-muted gap-3"
+              className="col-span-full py-16 flex flex-col items-center justify-center text-brand-muted gap-2.5"
             >
-              <Compass className="w-12 h-12 text-brand-muted/60 animate-bounce" />
-              <p className="font-bold text-base">No courses match your filter criteria.</p>
+              <Compass className="w-10 h-10 text-brand-muted/40 animate-bounce" />
+              <p className="font-extrabold text-sm">No courses match your filter criteria.</p>
             </motion.div>
           ) : (
-            filteredCourses.map((course) => {
-              const catColor = course.category?.color || '#6C1D5F';
-              const progress = getProgress(course.id);
-
-              return (
-                <motion.div
-                  layout
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{ duration: 0.4 }}
-                  key={course.id}
-                  onClick={() => navigate(`/learning?courseId=${course.id}`)}
-                  className="glass-panel glass-panel-hover p-6 rounded-2xl flex flex-col justify-between cursor-pointer border-l-4"
-                  style={{ borderLeftColor: catColor }}
-                >
-                  <div>
-                    {/* Badge and Duration */}
-                    <div className="flex justify-between items-start mb-4">
-                      <span
-                        className="text-[10px] font-bold px-2.5 py-1 rounded-full uppercase border"
-                        style={{
-                          backgroundColor: `${catColor}15`,
-                          color: catColor,
-                          borderColor: `${catColor}20`,
-                        }}
-                      >
-                        {course.category?.name || 'Learning'}
-                      </span>
-                      <span className="text-xs text-brand-muted font-bold">
-                        {course.duration || 'Self-Paced'}
-                      </span>
-                    </div>
-
-                    <h3 className="text-lg font-extrabold text-brand-primaryDark mb-2 leading-snug line-clamp-1">
-                      {course.title}
-                    </h3>
-                    <p className="text-brand-muted text-xs md:text-sm leading-relaxed mb-6 line-clamp-3">
-                      {course.description || 'No description provided.'}
-                    </p>
-
-                    {/* Progress indicator */}
-                    <div className="space-y-1.5 mb-6">
-                      <div className="flex justify-between text-[11px] font-bold text-brand-muted">
-                        <span>Progress</span>
-                        <span>{progress}%</span>
-                      </div>
-                      <div className="w-full h-1.5 bg-brand-primary/5 rounded-full overflow-hidden">
-                        <div
-                          className="h-full bg-gradient-to-r from-brand-success to-brand-accent rounded-full transition-all duration-500"
-                          style={{ width: `${progress}%` }}
-                        ></div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex justify-between items-center pt-3 border-t border-[#E2E4F0]/65">
-                    <span className="text-xs font-bold text-brand-muted bg-brand-bg/60 border border-[#E2E4F0]/60 px-2.5 py-1 rounded-md">
-                      {course.level || 'Beginner'}
-                    </span>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        navigate(`/learning?courseId=${course.id}`);
-                      }}
-                      className="bg-gradient-to-r from-brand-cta to-orange-500 hover:from-orange-500 hover:to-brand-cta text-white font-extrabold text-xs py-2 px-4 rounded-lg flex items-center gap-1.5 transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-0.5"
-                    >
-                      <BookOpen className="w-3.5 h-3.5" /> Start Course
-                    </button>
-                  </div>
-                </motion.div>
-              );
-            })
+            filteredCourses.map((course) => (
+              <CourseCard
+                key={course.id}
+                course={course}
+                progress={getProgress(course.id)}
+                onClick={() => navigate(`/learning?courseId=${course.id}`)}
+                onStartClick={(e) => {
+                  e.stopPropagation();
+                  navigate(`/learning?courseId=${course.id}`);
+                }}
+              />
+            ))
           )}
         </AnimatePresence>
       </div>
     </motion.div>
   );
 };
+export default CourseCatalog;

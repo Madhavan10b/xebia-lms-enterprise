@@ -9,7 +9,7 @@ export const AuthoringStudio: React.FC = () => {
   const { showToast } = useToast();
   const [courses, setCourses] = useState<Course[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
-  const [activeTab, setActiveTab] = useState<'analytics' | 'create-course' | 'create-category'>('analytics');
+  const [activeTab, setActiveTab] = useState<'create-course' | 'create-category'>('create-course');
   const [loading, setLoading] = useState(true);
 
   // Form States - Course
@@ -86,7 +86,6 @@ export const AuthoringStudio: React.FC = () => {
       
       // Reload lists
       await loadData();
-      setActiveTab('analytics');
     } catch (err) {
       showToast('Error creating category. Please try again.');
       console.error(err);
@@ -130,7 +129,6 @@ export const AuthoringStudio: React.FC = () => {
       
       // Reload lists
       await loadData();
-      setActiveTab('analytics');
     } catch (err) {
       showToast('Error publishing course. Please try again.');
       console.error(err);
@@ -160,7 +158,6 @@ export const AuthoringStudio: React.FC = () => {
   }
 
   const subTabs = [
-    { id: 'analytics', label: 'SEO & Analytics', icon: BarChart3 },
     { id: 'create-course', label: 'Create Course', icon: Film },
     { id: 'create-category', label: 'Create Category', icon: ListPlus },
   ];
@@ -196,104 +193,6 @@ export const AuthoringStudio: React.FC = () => {
       {/* Pages Container */}
       <div className="flex-grow">
         <AnimatePresence mode="wait">
-          {activeTab === 'analytics' && (
-            <motion.div
-              key="analytics"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.3 }}
-              className="flex flex-col gap-8"
-            >
-              {/* SEO Analytics Dashboard Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-                <div className="glass-panel p-5 rounded-2xl flex flex-col justify-between transition-all duration-300 hover:shadow-md">
-                  <div>
-                    <span className="block text-[10px] font-bold text-brand-muted uppercase tracking-wider mb-2">Total Views</span>
-                    <span className="text-3xl font-black text-brand-primaryDark">{totalViews.toLocaleString()}</span>
-                  </div>
-                  <span className="text-[10px] text-brand-success font-bold mt-2">across all pages</span>
-                </div>
-
-                <div className="glass-panel p-5 rounded-2xl flex flex-col justify-between transition-all duration-300 hover:shadow-md">
-                  <div>
-                    <span className="block text-[10px] font-bold text-brand-muted uppercase tracking-wider mb-2">Total Clicks</span>
-                    <span className="text-3xl font-black text-brand-primaryDark">{totalClicks.toLocaleString()}</span>
-                  </div>
-                  <span className="text-[10px] text-brand-success font-bold mt-2">from search engines</span>
-                </div>
-
-                <div className="glass-panel p-5 rounded-2xl flex flex-col justify-between transition-all duration-300 hover:shadow-md">
-                  <div>
-                    <span className="block text-[10px] font-bold text-brand-muted uppercase tracking-wider mb-2">Average CTR</span>
-                    <span className="text-3xl font-black text-brand-primaryDark">{avgCtr}</span>
-                  </div>
-                  <span className="text-[10px] text-brand-success font-bold mt-2">click-through-rate</span>
-                </div>
-
-                <div className="glass-panel p-5 rounded-2xl flex flex-col justify-between transition-all duration-300 hover:shadow-md">
-                  <div>
-                    <span className="block text-[10px] font-bold text-brand-muted uppercase tracking-wider mb-2">Average SEO Score</span>
-                    <span className="text-3xl font-black text-brand-primaryDark">{avgSeoScore}</span>
-                  </div>
-                  <span className="text-[10px] text-brand-success font-bold mt-2">out of 100 max</span>
-                </div>
-              </div>
-
-              {/* Indexing Table */}
-              <div className="glass-panel rounded-2xl border border-white/60 overflow-hidden shadow-glass">
-                <div className="overflow-x-auto">
-                  <table className="w-full border-collapse text-left text-xs md:text-sm">
-                    <thead>
-                      <tr className="bg-[#E2E4F0]/25 text-brand-primaryDark border-b border-[#E2E4F0]/40">
-                        <th className="p-4 font-extrabold">Course Title</th>
-                        <th className="p-4 font-extrabold text-center">Views</th>
-                        <th className="p-4 font-extrabold text-center">Clicks</th>
-                        <th className="p-4 font-extrabold text-center">CTR</th>
-                        <th className="p-4 font-extrabold text-center">SEO Score</th>
-                        <th className="p-4 font-extrabold text-center">Indexing Status</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-[#E2E4F0]/30">
-                      {courses.map((c) => {
-                        const ctrVal = c.totalViews ? ((c.totalClicks || 0) / c.totalViews * 100).toFixed(1) + '%' : '0.0%';
-                        const isExcellent = (c.seoScore || 0) >= 90;
-                        const isGood = (c.seoScore || 0) >= 80;
-
-                        return (
-                          <tr key={c.id} className="hover:bg-white/40 transition-all duration-200">
-                            <td className="p-4 font-bold text-brand-primaryDark">{c.title}</td>
-                            <td className="p-4 text-center text-brand-muted font-semibold">{(c.totalViews || 0).toLocaleString()}</td>
-                            <td className="p-4 text-center text-brand-muted font-semibold">{(c.totalClicks || 0).toLocaleString()}</td>
-                            <td className="p-4 text-center text-brand-muted font-semibold">{ctrVal}</td>
-                            <td className="p-4 text-center">
-                              <span
-                                className={`px-2.5 py-1 rounded-md text-xs font-bold ${
-                                  isExcellent
-                                    ? 'bg-brand-success/15 text-brand-success'
-                                    : isGood
-                                    ? 'bg-brand-cta/15 text-brand-cta'
-                                    : 'bg-brand-muted/15 text-brand-muted'
-                                }`}
-                              >
-                                {c.seoScore || 0}/100
-                              </span>
-                            </td>
-                            <td className="p-4 text-center font-extrabold text-xs">
-                              <span className={c.isPublished ? 'text-brand-success' : 'text-brand-muted'}>
-                                {c.isPublished ? 'Indexed' : 'Draft'}
-                              </span>
-                            </td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </motion.div>
-          )}
-
           {activeTab === 'create-course' && (
             <motion.div
               key="create-course"

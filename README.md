@@ -56,7 +56,7 @@ This compiles the React app into HTML, CSS, and JS, placing the build directly i
 2. **Start Spring Boot**:
    In the terminal, run:
    ```bash
-    
+      
    ```
 3. **Explore**:
    Open your browser and navigate to **`http://localhost:8085/`**.
